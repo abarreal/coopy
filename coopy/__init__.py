@@ -1,4 +1,4 @@
-from .op.logic import Predicate
+from .op.logic import Predicate, EmptyPredicate
 from .op.logic import ForAll as forall
 from .op.logic import Implies as implies
 from .op.logic import Exists as exists
@@ -29,8 +29,12 @@ neg = Predicate.negate
 def require(constraint):
     constraint.require()
 
-def all(self, constraints):
+def all(constraints):
+    if not constraints: 
+        return EmptyPredicate()
     return functools.reduce(lambda x,y: x & y, constraints)
 
-def any(self, constraints):
+def any(constraints):
+    if not constraints: 
+        return EmptyPredicate()
     return functools.reduce(lambda x,y: x | y, constraints)

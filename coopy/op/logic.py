@@ -118,6 +118,12 @@ class Predicate(Constraint):
     def __ror__(self, other):
         return Or(other, self)
 
+class EmptyPredicate(Predicate):
+
+    @property
+    def value(self):
+        return True
+
 class ForAll(Predicate):
 
     def __init__(self, bound_variables, predicate):
