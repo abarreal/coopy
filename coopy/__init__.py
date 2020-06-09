@@ -17,6 +17,8 @@ concretize = solver.concretize
 model = solver.model
 reset = solver.reset
 
+scope = solver.scope
+
 sort = solver.sort
 symbolic = solver.symbolic
 function = solver.uninterpreted_function

@@ -5,25 +5,40 @@ from z3 import *
 class Z3Backend:
 
     def __init__(self):
-        self._solver = Solver()
-        self._children = []
-        self._sorts = set()
+        self._default_scope = Z3Scope(self, Solver())
+        self._transient_scopes = []
+
+    @property
+    def default_scope(self):
+        return self._default_scope
+
+    @property
+    def _active_scope(self):
+        return self._default_scope if not self._transient_scopes else self._transient_scopes[-1]
 
     def reset(self):
-        self._solver.reset()
-        self._children.clear()
+        self._active_scope.reset()
 
     def model(self):
-        self._solver.check()
-        return self._solver.model()
+        scope = self._active_scope
+        scope.check()
+        return scope.model()
 
     def add(self, constraint):
-        self._solver.add(constraint)
+        self._active_scope.add(constraint)
 
     def declare_sort(self, name):
         sort = DeclareSort(name)
-        self._sorts.add(sort)
+        self._active_scope.add_sort(sort)
         return sort
+
+    def scope(self):
+        scope = Z3Scope(self, Solver())
+        self._transient_scopes.append(scope)
+        return scope
+
+    def exit_scope(self):
+        self._transient_scopes.pop()
 
     def symbolic(self, basename, sort):
         return Const(self._autogenerate_name(basename), sort)
@@ -59,7 +74,7 @@ class Z3Backend:
         return self.conjunction(self.implies(a,b), self.implies(b,a))
 
     def uninterpreted_function(self, basename, *sorts):
-        # Not autogenerating name for functions, cause it looks like cr*p.
+        # Not autogenerating name for functions, it does not look that well.
         return Function(basename, *sorts)
 
     def evaluate_uninterpreted(self, f, *args):
@@ -75,13 +90,48 @@ class Z3Backend:
         # Evaluate the function and obtain a result.
         value = model.evaluate(f(*args))
         # If of a custom sort, wrap the resulting value in a wrapper.
-        return Z3CustomTypeWrapper(value) if value.sort() in self._sorts else value
+        sorts = self._active_scope.sorts
+        return Z3CustomTypeWrapper(value) if value.sort() in sorts else value
 
     def _autogenerate_name(self, basename):
         type(self)._autogenerate_name.counter += 1
         return '{}:{}'.format(basename, type(self)._autogenerate_name.counter)
     
     _autogenerate_name.counter = 0
+
+#==================================================================================================
+#--------------------------------------------------------------------------------------------------
+class Z3Scope:
+
+    def __init__(self, backend, solver):
+        self._backend = backend
+        self._solver = solver
+        self._sorts = set()
+
+    def reset(self):
+        self._solver.reset()
+
+    def check(self):
+        self._solver.check()
+
+    def model(self):
+        return self._solver.model()
+
+    def add(self, constraint):
+        self._solver.add(constraint)
+
+    def add_sort(self, sort):
+        self._sorts.add(sort)
+
+    @property
+    def sorts(self):
+        return self._sorts
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type, value, traceback):
+        self._backend.exit_scope()
 
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------

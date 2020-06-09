@@ -4,14 +4,23 @@ from .symbolic.types import *
 class Front:
 
     def __init__(self):
-        self._children = []
+        self._default_scope = FrontScope(self, backend, backend.default_scope)
+        self._transient_scopes = []
+
+    def scope(self):
+        backend_scope = backend.scope()
+        scope = FrontScope(self, backend, backend_scope)
+        self._transient_scopes.append(scope)
+        return scope
+
+    def exit_scope(self):
+        self._transient_scopes.pop()
 
     def reset(self):
-        backend.reset()
-        self._children.clear()
+        self._active_scope.reset()
 
     def model(self):
-        return backend.model()
+        return self._active_scope.model()
 
     def concretize(self):
         # We first obtain a model given the current constraints.
@@ -65,3 +74,39 @@ class Front:
         self._children.append(object)
         # Then we just return the object.
         return object
+
+    @property
+    def _active_scope(self):
+        return self._default_scope if not self._transient_scopes else self._transient_scopes[-1]
+
+    @property
+    def _children(self):
+        return self._active_scope.children
+
+#==================================================================================================
+#--------------------------------------------------------------------------------------------------
+class FrontScope:
+
+    def __init__(self, frontend, backend, backend_scope):
+        self._frontend = frontend
+        self._backend = backend
+        self._backend_scope = backend_scope
+        self._symbols = []
+
+    @property
+    def children(self):
+        return self._symbols
+
+    def reset(self):
+        self._backend.reset()
+        self._symbols.clear()
+
+    def model(self):
+        return self._backend.model()
+
+    def __enter__(self):
+        self._backend_scope.__enter__()
+
+    def __exit__(self, type, value, traceback):
+        self._backend_scope.__exit__(type, value, traceback)
+        self._frontend.exit_scope()

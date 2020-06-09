@@ -37,26 +37,28 @@ def construct_k_colored_graph(k, n, p):
     in which case the concretization process will throw
     an exception.
     """
-    # Instantiate n nodes.
-    nodes = [Node() for i in range(n)]
+    with coopy.scope():
+        
+        # Instantiate n nodes.
+        nodes = [Node() for i in range(n)]
 
-    # Connect nodes with probability p.
-    for i in range(n-1):
-        for j in range(i+1,n):
-            a = nodes[i]
-            b = nodes[j]
-            if random.uniform(0,1) < p:
-                a.direct_edge_towards(b)
-                b.direct_edge_towards(a)
+        # Connect nodes with probability p.
+        for i in range(n-1):
+            for j in range(i+1,n):
+                a = nodes[i]
+                b = nodes[j]
+                if random.uniform(0,1) < p:
+                    a.direct_edge_towards(b)
+                    b.direct_edge_towards(a)
 
-    # Impose restrictions over the nodes.
-    for node in nodes:
-        coopy.any([node.color == i for i in range(k)]).require()
-        node.has_valid_connections.require()
+        # Impose restrictions over the nodes.
+        for node in nodes:
+            coopy.any([node.color == i for i in range(k)]).require()
+            node.has_valid_connections.require()
 
-    # Concretize the graph and return it as a list of nodes.
-    coopy.concretize()
-    return nodes
+        # Concretize the graph and return it as a list of nodes.
+        coopy.concretize()
+        return nodes
 
 graph = construct_k_colored_graph(3, 10, 0.2)
 print(graph)
