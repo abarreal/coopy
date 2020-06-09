@@ -5,6 +5,8 @@ from .op.logic import Exists as exists
 from .op.logic import Iff as iff
 from .frontend import Front
 
+import functools
+
 solver = Front()
 
 # Allow access to front-end methods more easily.
@@ -26,3 +28,9 @@ neg = Predicate.negate
 # by writing them like require(x > y).
 def require(constraint):
     constraint.require()
+
+def all(self, constraints):
+    return functools.reduce(lambda x,y: x & y, constraints)
+
+def any(self, constraints):
+    return functools.reduce(lambda x,y: x | y, constraints)
