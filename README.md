@@ -177,10 +177,7 @@ From then on, booleans and functions alike can be used as regular Python objects
 
 * Write more tests.
 
-* Implement support for constraint solver layers (i.e. `push`, `pop`) 
-and optional constraints (e.g. `pop` if failed and try again).
-
-* Implement support for multiple solver scopes (`coopy.activate('myscope')`).
+* Implement support for constraint solver layers (i.e. `push`, `pop`).
 
 * Implement a wrapper to encapsulate Z3 exceptions in case of unsolvability.
 
