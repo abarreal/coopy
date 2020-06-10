@@ -82,6 +82,10 @@ As we can see, the `Graph` class has two attributes: a collection of
 nodes, and a collection of edges. A graph also has a property `valid`
 which requires all nodes to be valid and all edges to be valid.
 
+> **Note**: The above example uses `functools.reduce` to conjoin the 
+constraints. Coopy implements a function `all`, however, which can be used 
+instead. There is also a function `any` for disjunction.
+
 With that, our model has been defined. We now proceed to generate
 an actual, concrete graph that meets all validity conditions.
 Take a look then at the following code:

@@ -115,11 +115,9 @@ class Graph:
     @property
     def valid(self):
         # Assert that nodes are valid.
-        nodes_valid = [node.valid for node in self._nodes]
-        nodes_valid = reduce(lambda x,y: x & y, nodes_valid)
+        nodes_valid = coopy.all([node.valid for node in self._nodes])
         # Assert that edges are valid.
-        edges_valid = [edge.valid for edge in self._edges]
-        edges_valid = reduce(lambda x,y: x & y, edges_valid)
+        edges_valid = coopy.all([edge.valid for edge in self._edges])
         # Both conditions must be met for the graph to be valid.
         return nodes_valid & edges_valid
 
