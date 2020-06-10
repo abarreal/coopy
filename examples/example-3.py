@@ -87,27 +87,29 @@ class StateTransition:
         a = self._a
         b = self._b
 
-        # First, have both buckets advance to a new state.
+        # First, have both buckets advance 
+        # to a new state.
         a.advance()
         b.advance()
 
-        # Now we proceed to evaluate all valid state transitions.
-        possible_outcomes = []
+        # Now we proceed to disjoin all 
+        # valid state transitions.
+        outcome = False
 
         # Fill one bucket completely.
-        possible_outcomes.append(a.filled & b.unchanged)
-        possible_outcomes.append(a.unchanged & b.filled)
+        outcome |= a.filled & b.unchanged
+        outcome |= a.unchanged & b.filled
 
         # Empty one bucket.
-        possible_outcomes.append(a.empty & b.unchanged)
-        possible_outcomes.append(a.unchanged & b.empty)
+        outcome |= a.empty & b.unchanged
+        outcome |= a.unchanged & b.empty
 
-        # Pour the contents of one bucket into another.
-        possible_outcomes.append(a.poured_into(b))
-        possible_outcomes.append(b.poured_into(a))
+        # Pour the contents of one bucket 
+        # into another.
+        outcome |= a.poured_into(b)
+        outcome |= b.poured_into(a)
 
-        # Impose a disjunction of all possible resulting states.
-        reduce(lambda x,y: x | y, possible_outcomes).require()
+        outcome.require()
 
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------
