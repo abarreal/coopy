@@ -11,6 +11,9 @@ class Constraint(Evaluable):
     def require(self):
         self.impose()
 
+    def soft(self, weight=1):
+        backend.soft(self.value, weight=weight)
+
     @property
     def has_concrete_value(self):
         return False # this should be overriden by child classes.

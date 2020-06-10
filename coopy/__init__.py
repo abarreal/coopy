@@ -18,6 +18,7 @@ model = solver.model
 reset = solver.reset
 
 scope = solver.scope
+optimizer = solver.optimizer
 
 sort = solver.sort
 symbolic = solver.symbolic

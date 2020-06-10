@@ -8,10 +8,10 @@ class Front:
         self._transient_scopes = []
 
     def scope(self):
-        backend_scope = backend.scope()
-        scope = FrontScope(self, backend, backend_scope)
-        self._transient_scopes.append(scope)
-        return scope
+        return self._scope(backend.scope())
+
+    def optimizer(self):
+        return self._scope(backend.optimizer())
 
     def exit_scope(self):
         self._transient_scopes.pop()
@@ -82,6 +82,11 @@ class Front:
     @property
     def _children(self):
         return self._active_scope.children
+
+    def _scope(self, backend_scope):
+        scope = FrontScope(self, backend, backend_scope)
+        self._transient_scopes.append(scope)
+        return scope
 
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------

@@ -27,6 +27,9 @@ class Z3Backend:
     def add(self, constraint):
         self._active_scope.add(constraint)
 
+    def soft(self, constraint, weight=1):
+        self._active_scope.soft(constraint, weight)
+
     def declare_sort(self, name):
         sort = DeclareSort(name)
         self._active_scope.add_sort(sort)
@@ -34,6 +37,11 @@ class Z3Backend:
 
     def scope(self):
         scope = Z3Scope(self, Solver())
+        self._transient_scopes.append(scope)
+        return scope
+
+    def optimizer(self):
+        scope = Z3Scope(self, Optimize())
         self._transient_scopes.append(scope)
         return scope
 
@@ -119,6 +127,9 @@ class Z3Scope:
 
     def add(self, constraint):
         self._solver.add(constraint)
+
+    def soft(self, constraint, weight=1):
+        self._solver.add_soft(constraint, weight=1)
 
     def add_sort(self, sort):
         self._sorts.add(sort)
