@@ -22,7 +22,20 @@ class Front:
     def model(self):
         return self._active_scope.model()
 
-    def concretize(self):
+    def minimize(self, expression):
+        self._active_scope.minimize(expression)
+
+    def maximize(self, expression):
+        self._active_scope.maximize(expression)
+
+    def concretize(self, minimize=None, maximize=None):
+
+        if not minimize is None:
+            self.minimize(minimize)
+
+        if not maximize is None:
+            self.maximize(maximize)
+
         # We first obtain a model given the current constraints.
         model = self.model()
         # We then concretize all non concretized children for which there
@@ -105,6 +118,12 @@ class FrontScope:
     def reset(self):
         self._backend.reset()
         self._symbols.clear()
+
+    def minimize(self, expression):
+        self._backend.minimize(expression.value)
+
+    def maximize(self, expression):
+        self._backend.maximize(expression.value)
 
     def model(self):
         return self._backend.model()

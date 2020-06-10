@@ -3,7 +3,7 @@ import coopy
 
 from coopy.symbolic.types.primitives import SymbolicReal
 
-class TestBooleans(unittest.TestCase):
+class TestReals(unittest.TestCase):
 
     def setUp(self):
         coopy.reset()

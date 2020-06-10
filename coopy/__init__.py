@@ -16,6 +16,8 @@ symbolic_bool = solver.symbolic_bool
 concretize = solver.concretize
 model = solver.model
 reset = solver.reset
+maximize = solver.maximize
+minimize = solver.minimize
 
 scope = solver.scope
 optimizer = solver.optimizer

@@ -19,6 +19,12 @@ class Z3Backend:
     def reset(self):
         self._active_scope.reset()
 
+    def minimize(self, expression):
+        self._active_scope.minimize(expression)
+
+    def maximize(self, expression):
+        self._active_scope.maximize(expression)
+
     def model(self):
         scope = self._active_scope
         scope.check()
@@ -130,6 +136,12 @@ class Z3Scope:
 
     def soft(self, constraint, weight=1):
         self._solver.add_soft(constraint, weight=1)
+
+    def minimize(self, expression):
+        self._solver.minimize(expression)
+
+    def maximize(self, expression):
+        self._solver.maximize(expression)
 
     def add_sort(self, sort):
         self._sorts.add(sort)
