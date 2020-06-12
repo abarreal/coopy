@@ -32,7 +32,10 @@ neg = Predicate.negate
 # expressions like (x > y).require() more natural
 # by writing them like require(x > y).
 def require(constraint):
-    constraint.require()
+    if isinstance(constraint, Predicate):
+        constraint.require()
+    elif not (type(constraint) == bool and constraint == True):
+        raise Exception('Cannot require {} as a constraint'.format(constraint))
 
 def all(constraints):
     if not constraints: 
