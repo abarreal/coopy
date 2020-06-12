@@ -21,7 +21,7 @@ class SymbolicInteger(Symbol, SymbolicPrimitive, ConcretizableArithmeticOperand)
     def concrete_value(self):
         return super().concrete_value.as_long()
 
-class SymbolicBool(Symbol, Predicate, SymbolicPrimitive, ConcretizableEntity):
+class SymbolicBool(Symbol, Predicate, SymbolicPrimitive):
 
     @property
     def concrete_value(self):

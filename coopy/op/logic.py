@@ -80,7 +80,7 @@ class ConcretizableOrdered(ConcretizableEntity):
 # LOGIC AST NODES
 #
 #--------------------------------------------------------------------------------------------------
-class Predicate(Constraint):
+class Predicate(Constraint, ConcretizableEntity):
 
     @staticmethod
     def negate(predicate):
