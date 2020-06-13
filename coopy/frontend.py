@@ -16,6 +16,10 @@ class Front:
     def exit_scope(self):
         self._transient_scopes.pop()
 
+    @property
+    def assertions(self):
+        return self._active_scope.assertions
+
     def reset(self):
         self._active_scope.reset()
 
@@ -126,6 +130,10 @@ class FrontScope:
     @property
     def children(self):
         return self._symbols
+
+    @property
+    def assertions(self):
+        return self._backend_scope.assertions
 
     def reset(self):
         self._backend.reset()

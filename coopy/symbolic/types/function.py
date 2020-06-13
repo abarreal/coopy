@@ -17,6 +17,10 @@ class RValue(Evaluable, Entity):
     def symbol(self):
         return self._symbol
 
+    @property
+    def has_concrete_value(self):
+        return False
+
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------
 class ConcretizableFunction(Evaluable):

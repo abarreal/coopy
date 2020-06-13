@@ -143,6 +143,10 @@ class Z3Scope:
     def model(self):
         return self._solver.model()
 
+    @property
+    def assertions(self):
+        return self._solver.assertions()
+
     def add(self, constraint):
         self._solver.add(constraint)
 
