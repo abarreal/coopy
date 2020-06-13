@@ -21,6 +21,9 @@ class RValue(Evaluable, Entity):
     def has_concrete_value(self):
         return False
 
+    def __repr__(self):
+        return self.value.__repr__()
+
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------
 class ConcretizableFunction(Evaluable):

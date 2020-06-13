@@ -53,7 +53,7 @@ from .symbolic import Evaluable
 
 class CustomSort(Evaluable):
 
-    def __init__(self, name=None, sort=None, value=None):
+    def __init__(self, name=None, value=None, sort=None):
         self._sym = value if value else symbolic(name if name else '{}i'.format(sort.name), sort)
 
     @property
