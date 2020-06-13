@@ -19,6 +19,12 @@ class Front:
     def reset(self):
         self._active_scope.reset()
 
+    def push(self):
+        self._active_scope.push()
+
+    def pop(self):
+        self._active_scope.pop()
+
     def model(self):
         return self._active_scope.model()
 
@@ -45,6 +51,12 @@ class Front:
             # for this child's symbolic variable in the model.
             if model[child.symbol] != None:
                 child.concretize(model)
+                # Additionally impose the equality restriction.
+                # NOTE: Z3 does not seem to allow concretizing functions,
+                # thus concrete value constraints are only imposed for non functions.
+                if not child.is_function:
+                    self._active_scope.concretize(child, model)
+
         # Just return the model.
         return model
     
@@ -118,6 +130,15 @@ class FrontScope:
     def reset(self):
         self._backend.reset()
         self._symbols.clear()
+
+    def push(self):
+        self._backend.push()
+
+    def pop(self):
+        self._backend.pop()
+
+    def concretize(self, variable, model):
+        self._backend_scope.add(variable.symbol == model[variable.symbol])
 
     def minimize(self, expression):
         self._backend.minimize(expression.value)

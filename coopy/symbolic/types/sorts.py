@@ -1,5 +1,5 @@
 from ...smt import backend_obj_to_obj
-from ..symbol import Symbol
+from ..symbol import Symbol, Evaluable
 from ...op.logic import ConcretizableEntity
 
 #==================================================================================================

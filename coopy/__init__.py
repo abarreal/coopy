@@ -18,6 +18,8 @@ model = solver.model
 reset = solver.reset
 maximize = solver.maximize
 minimize = solver.minimize
+push = solver.push
+pop = solver.pop
 
 scope = solver.scope
 optimizer = solver.optimizer
@@ -46,3 +48,23 @@ def any(constraints):
     if not constraints: 
         return EmptyPredicate()
     return functools.reduce(lambda x,y: x | y, constraints)
+
+from .symbolic import Evaluable
+
+class CustomSort(Evaluable):
+
+    def __init__(self, name=None, sort=None, value=None):
+        self._sym = value if value else symbolic(name if name else '{}i'.format(sort.name), sort)
+
+    @property
+    def value(self):
+        return self._sym.value
+
+    def __eq__(self, other):
+        return self._sym == other._sym
+
+    def __ne__(self, other):
+        return self._sym != other._sym
+
+    def __repr__(self):
+        return self._sym.value.__repr__()

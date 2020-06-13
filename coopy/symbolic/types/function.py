@@ -37,6 +37,10 @@ class ConcretizableFunction(Evaluable):
     def symbol(self):
         return self._symbol
 
+    @property
+    def is_function(self):
+        return True
+
     def __call__(self, *args, wrapper=None):
 
         # Unwrap arguments.

@@ -30,6 +30,12 @@ class Z3Backend:
         scope.check()
         return scope.model()
 
+    def push(self):
+        self._active_scope.push()
+
+    def pop(self):
+        self._active_scope.pop()
+
     def add(self, constraint):
         self._active_scope.add(constraint)
 
@@ -128,6 +134,12 @@ class Z3Scope:
     def check(self):
         self._solver.check()
 
+    def push(self):
+        self._solver.push()
+
+    def pop(self):
+        self._solver.pop()
+
     def model(self):
         return self._solver.model()
 
@@ -167,6 +179,10 @@ class Z3CustomTypeWrapper:
     def wrapped(self):
         return self._obj
 
+    @property
+    def value(self):
+        return self.wrapped
+
     def __eq__(self, other):
         if isinstance(other, Z3CustomTypeWrapper):
             return self._obj.eq(other._obj)
@@ -175,6 +191,9 @@ class Z3CustomTypeWrapper:
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __repr__(self):
+        return self.value.__repr__()
 
 def to_int(z3_object):
     return z3_object.as_long()

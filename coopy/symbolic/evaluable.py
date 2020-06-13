@@ -8,6 +8,10 @@ class Evaluable:
     def has_concrete_value(self):
         raise Exception('Not implemented (abstract)')
 
+    @property
+    def is_function(self):
+        return False # should be overriden by child classes if needed.
+
 def is_evaluable(object):
     return isinstance(object, Evaluable)
 
