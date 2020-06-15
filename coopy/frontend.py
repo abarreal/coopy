@@ -66,19 +66,19 @@ class Front:
     
     def symbolic_int(self, basename='int'):
         symbol = backend.symbolic_int(basename)
-        object = SymbolicInteger(basename, symbol)
+        object = SymbolicInteger(str(symbol), symbol)
         self._children.append(object)
         return object
 
     def symbolic_bool(self, basename='bool'):
         symbol = backend.symbolic_bool(basename)
-        object = SymbolicBool(basename, symbol)
+        object = SymbolicBool(str(symbol), symbol)
         self._children.append(object)
         return object
 
     def symbolic_real(self, basename='real', precision=6):
         symbol = backend.symbolic_real(basename)
-        object = SymbolicReal(basename, symbol, precision=precision)
+        object = SymbolicReal(str(symbol), symbol, precision=precision)
         self._children.append(object)
         return object
 
@@ -88,7 +88,7 @@ class Front:
 
     def symbolic(self, name, sort):
         symbol = backend.symbolic(name, sort.symbol)
-        object = SymbolicObject(name, symbol, sort)
+        object = SymbolicObject(str(symbol), symbol, sort)
         self._children.append(object)
         return object
 

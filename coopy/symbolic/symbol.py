@@ -47,6 +47,9 @@ class Symbol(Evaluable):
         else:
             return self.value.__repr__()
 
+    def __hash__(self):
+        return hash(self.symbol)
+
 # Concretizable decorator for functions that change behavior once the symbols
 # have been concretized.
 def concretizable(concrete_alternative):

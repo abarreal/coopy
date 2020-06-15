@@ -90,8 +90,11 @@ class Z3Backend:
     def implies(self, antecedent, consequent):
         return Implies(antecedent, consequent)
 
+    def ite(self, guard, true_case, false_case):
+        return If(guard, true_case, false_case)
+
     def iff(self, a, b):
-        return self.conjunction(self.implies(a,b), self.implies(b,a))
+        return a == b
 
     def uninterpreted_function(self, basename, *sorts):
         # Not autogenerating name for functions, it does not look that well.

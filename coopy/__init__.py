@@ -3,6 +3,7 @@ from .op.logic import ForAll as forall
 from .op.logic import Implies as implies
 from .op.logic import Exists as exists
 from .op.logic import Iff as iff
+from .op.other import ITE as ite
 from .frontend import Front
 
 import functools
