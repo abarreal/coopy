@@ -1,6 +1,7 @@
 from ..smt import backend
 from .logic import Predicate
 from .arithmetic import ConcretizableArithmeticOperand
+from ..symbolic import do_evaluate
 
 class ITE(Predicate, ConcretizableArithmeticOperand):
 
