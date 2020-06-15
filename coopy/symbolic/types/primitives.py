@@ -1,4 +1,4 @@
-from .. import Symbol
+from .. import Symbol, Evaluable
 from ...op.arithmetic import ConcretizableArithmeticOperand
 from ...op.logic import Predicate, ConcretizableEntity
 
@@ -43,3 +43,38 @@ class SymbolicReal(Symbol, SymbolicPrimitive, ConcretizableArithmeticOperand):
             self._concretized_value = float(model_str)
 
         return self._concretized_value
+
+class ConcreteWrapper(Evaluable, SymbolicPrimitive, ConcretizableArithmeticOperand):
+    
+    def __init__(self, value):
+        self._value = value
+
+    @property
+    def name(self):
+        return self.__repr__()
+
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def concretized(self):
+        return True
+
+    @property
+    def concrete_value(self):
+        return self.value
+
+    @property
+    def has_concrete_value(self):
+        return True
+
+    @property
+    def symbol(self):
+        return self.value
+
+    def __repr__(self):
+        return self.value.__repr__()
+
+    def __hash__(self):
+        return hash(self.value)

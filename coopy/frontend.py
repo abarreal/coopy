@@ -63,6 +63,9 @@ class Front:
 
         # Just return the model.
         return model
+
+    def wrap_concrete(self, value):
+        return ConcreteWrapper(value)
     
     def symbolic_int(self, basename='int'):
         symbol = backend.symbolic_int(basename)

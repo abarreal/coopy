@@ -196,10 +196,6 @@ class Or(BinaryLogicalOperator):
     def __bool__(self):
         return self.left_value or self.right_value
 
-class Equal(BinaryLogicalOperator):
-    def __init__(self, a, b):
-        super().__init__(a, b, lambda a,b: a == b)
-
 class NotEqual(BinaryLogicalOperator):
     def __init__(self, a, b):
         super().__init__(a, b, lambda a,b: a != b)
@@ -219,3 +215,16 @@ class LessThan(BinaryLogicalOperator):
 class LessThanOrEqual(BinaryLogicalOperator):
     def __init__(self, a, b):
         super().__init__(a, b, lambda a,b: a <= b)
+
+class Equal(BinaryLogicalOperator):
+
+    def __init__(self, a, b):
+        super().__init__(a, b, lambda a,b: a == b)
+
+    def __bool__(self):
+        if not self.has_concrete_value:
+            # This is to prevent errors when adding symbolic
+            # elements to dictionaries.
+            return False
+        else:
+            return bool(self.concrete_value)

@@ -21,6 +21,7 @@ maximize = solver.maximize
 minimize = solver.minimize
 push = solver.push
 pop = solver.pop
+wrap_concrete = solver.wrap_concrete
 
 scope = solver.scope
 optimizer = solver.optimizer
