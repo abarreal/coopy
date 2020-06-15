@@ -66,7 +66,13 @@ class Front:
 
     def wrap_concrete(self, value):
         return ConcreteWrapper(value)
-    
+
+    def symbolic_int_array(self, basename='arr'):
+        symbol = backend.symbolic_int_array(basename)
+        object = SymbolicArray(str(symbol), symbol, datatype=SymbolicInteger)
+        self._children.append(object)
+        return object
+
     def symbolic_int(self, basename='int'):
         symbol = backend.symbolic_int(basename)
         object = SymbolicInteger(str(symbol), symbol)

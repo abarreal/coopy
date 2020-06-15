@@ -14,6 +14,7 @@ solver = Front()
 symbolic_int = solver.symbolic_int
 symbolic_real = solver.symbolic_real
 symbolic_bool = solver.symbolic_bool
+symbolic_int_array = solver.symbolic_int_array
 concretize = solver.concretize
 model = solver.model
 reset = solver.reset

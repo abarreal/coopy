@@ -72,6 +72,9 @@ class Z3Backend:
     def symbolic_real(self, basename):
         return Real(self._autogenerate_name(basename))
 
+    def symbolic_int_array(self, basename):
+        return Array(self._autogenerate_name(basename), IntSort(), IntSort())
+
     def conjunction(self, *args):
         return And(*args)
 

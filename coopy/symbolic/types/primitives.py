@@ -44,6 +44,30 @@ class SymbolicReal(Symbol, SymbolicPrimitive, ConcretizableArithmeticOperand):
 
         return self._concretized_value
 
+class SymbolicArray(Symbol):
+
+    def __init__(self, *args, datatype=SymbolicInteger, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._DataType = datatype
+        self._created = []
+
+    def concretize(self, model):
+        super().concretize(model)
+        # Also concretize elements created by array accesses.
+        for c in self._created:
+            c.concretize(model)
+
+    def __getitem__(self, idx):
+        element = self.symbol[idx]
+        element_name = '{}[{}]'.format(self.name, idx)
+        element_object = self._DataType(name=element_name, backend_symbol=element)
+        if self.has_concrete_value:
+            element_object.concretize(self._model)
+            return element_object.concrete_value
+        else:
+            self._created.append(element_object)
+            return element_object
+
 class ConcreteWrapper(Evaluable, SymbolicPrimitive, ConcretizableArithmeticOperand):
     
     def __init__(self, value):
