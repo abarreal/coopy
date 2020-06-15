@@ -1,4 +1,4 @@
-from .. import Symbol, Evaluable
+from .. import Symbol, Evaluable, do_evaluate
 from ...op.arithmetic import ConcretizableArithmeticOperand
 from ...op.logic import Predicate, ConcretizableEntity
 
@@ -58,6 +58,7 @@ class SymbolicArray(Symbol):
             c.concretize(model)
 
     def __getitem__(self, idx):
+        idx = do_evaluate(idx)
         element = self.symbol[idx]
         element_name = '{}[{}]'.format(self.name, idx)
         element_object = self._DataType(name=element_name, backend_symbol=element)
