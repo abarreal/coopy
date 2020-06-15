@@ -25,6 +25,11 @@ class Z3Backend:
     def maximize(self, expression):
         self._active_scope.maximize(expression)
 
+    def check_sat(self):
+        scope = self._active_scope
+        output = scope.check()
+        return output.r == 1
+
     def model(self):
         scope = self._active_scope
         scope.check()
@@ -138,7 +143,7 @@ class Z3Scope:
         self._solver.reset()
 
     def check(self):
-        self._solver.check()
+        return self._solver.check()
 
     def push(self):
         self._solver.push()

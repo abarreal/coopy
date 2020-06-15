@@ -29,6 +29,9 @@ class Front:
     def pop(self):
         self._active_scope.pop()
 
+    def check_sat(self):
+        return self._active_scope.check_sat()
+
     def model(self):
         return self._active_scope.model()
 
@@ -162,6 +165,9 @@ class FrontScope:
 
     def maximize(self, expression):
         self._backend.maximize(expression.value)
+
+    def check_sat(self):
+        return self._backend.check_sat()
 
     def model(self):
         return self._backend.model()

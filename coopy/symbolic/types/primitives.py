@@ -44,7 +44,7 @@ class SymbolicReal(Symbol, SymbolicPrimitive, ConcretizableArithmeticOperand):
 
         return self._concretized_value
 
-class SymbolicArray(Symbol):
+class SymbolicArray(Symbol, ConcretizableEntity):
 
     def __init__(self, *args, datatype=SymbolicInteger, **kwargs):
         super().__init__(*args, **kwargs)

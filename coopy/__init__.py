@@ -17,6 +17,7 @@ symbolic_bool = solver.symbolic_bool
 symbolic_int_array = solver.symbolic_int_array
 concretize = solver.concretize
 model = solver.model
+check_sat = solver.check_sat
 reset = solver.reset
 maximize = solver.maximize
 minimize = solver.minimize
