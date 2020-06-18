@@ -28,7 +28,7 @@ class Z3Backend:
     def check_sat(self):
         scope = self._active_scope
         output = scope.check()
-        return output.r == 1
+        return (output.r == 1), (self._active_scope.model() if output.r == 1 else None)
 
     def model(self):
         scope = self._active_scope
@@ -42,6 +42,7 @@ class Z3Backend:
         self._active_scope.pop()
 
     def add(self, constraint):
+        constraint = simplify(constraint)
         self._active_scope.add(constraint)
 
     def soft(self, constraint, weight=1):

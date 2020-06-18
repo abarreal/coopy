@@ -1,4 +1,5 @@
 from .smt import backend
+from .symbolic import Evaluable
 from .symbolic.types import *
 
 class Front:
@@ -50,7 +51,7 @@ class Front:
             self.maximize(maximize)
 
         # We first obtain a model given the current constraints.
-        model = self.model()
+        model = self.model().backend_model
         # We then concretize all non concretized children for which there
         # is a solution in the model.
         for child in [c for c in self._children if not c.concretized]:
@@ -131,6 +132,31 @@ class Front:
 
 #==================================================================================================
 #--------------------------------------------------------------------------------------------------
+class Model:
+
+    def __init__(self, backend_model):
+        self._backend_model = backend_model
+
+    @property
+    def backend_model(self):
+        return self._backend_model
+
+    def __getitem__(self, item):
+        return self.evaluate(item)
+
+    def evaluate(self, expression):
+        if not isinstance(expression, Evaluable):
+            return expression
+        elif expression.has_concrete_value:
+            return expression.value
+        else:
+            return self._backend_model.evaluate(expression.value)
+
+    def __repr__(self):
+        return self.backend_model.__repr__()
+
+#==================================================================================================
+#--------------------------------------------------------------------------------------------------
 class FrontScope:
 
     def __init__(self, frontend, backend, backend_scope):
@@ -167,10 +193,11 @@ class FrontScope:
         self._backend.maximize(expression.value)
 
     def check_sat(self):
-        return self._backend.check_sat()
+        sat, model = self._backend.check_sat()
+        return sat, (Model(model) if sat else None)
 
     def model(self):
-        return self._backend.model()
+        return Model(self._backend.model())
 
     def __enter__(self):
         self._backend_scope.__enter__()
