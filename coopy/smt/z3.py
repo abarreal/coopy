@@ -42,7 +42,10 @@ class Z3Backend:
         self._active_scope.pop()
 
     def add(self, constraint):
-        constraint = simplify(constraint)
+        # Simplify non boolean constraints.
+        if not type(constraint) == bool:
+            constraint = simplify(constraint)
+        # Add the constraint.
         self._active_scope.add(constraint)
 
     def soft(self, constraint, weight=1):
