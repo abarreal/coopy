@@ -112,6 +112,20 @@ class Z3Backend:
         # Not autogenerating name for functions, it does not look that well.
         return Function(basename, *sorts)
 
+    def evaluate_in_model(self, expression, own_model, handler, precision=6):
+        # Evaluate the given expression in the model.
+        output = own_model.evaluate(expression)
+        # Call the appropriate handler depending on the type of the result.
+        # Boolean sort has kind '1'.
+        if output.sort().kind() == 1:
+            return handler._handle_bool(bool(output))
+        # Integer sort has kind '2'.
+        if output.sort().kind() == 2:
+            return handler._handle_integer(output.as_long())
+        # Real sort has kind '3'.
+        if output.sort().kind() == 3:
+            return handler._handle_real(float(output.as_decimal(precision)))
+
     def evaluate_uninterpreted(self, f, *args):
         return f(*args)
 
