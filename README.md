@@ -17,11 +17,13 @@ After concretization, symbolic attributes acquire concrete values and start
 behaving just like regular Python types, transitioning back seamlessly 
 into an imperative object oriented programming model.
 
-For a detailed introduction and usage examples, check the [tutorial](tutorial) files in 
+For a detailed introduction and usage examples check the [tutorial](tutorial) files in 
 this same repository. If you'd rather read code, on the other hand, check the [examples](examples)
 and [tests](test) in this same repository. There are also some code samples listed below.
 Finally, be sure to read the [gotchas](tutorial/gotchas.md) section of the tutorial, 
-as there are some details that must be kept in mind when using Coopy.  
+as there are some details that must be kept in mind when using Coopy. There is also a short [PDF paper](paper/paper.pdf), if you want some background on the library and what's the motivation behind it.
+
+
 
 ## Installation and Requirements
 
@@ -164,25 +166,27 @@ how to encode state machines as object models and then use Coopy to analyze
 their evolution.
 
 * [Custom Sorts and Uninterpreted Functions](examples/example-4.py): 
-This example shows how to define custom sorts (i.e. domains) 
-and symbolic (i.e. uninterpreted) functions. Concretely, we define a 
-`Boolean` type for which two values exist: `T` and `F`. 
-Uninterpreted functions `*` (and), `+` (or), and `~` (negation) 
-mapping booleans to booleans are also defined. A `BooleanAlgebra`
-then defines axioms over these entities. The `concretize` method is 
-finally called, which assigns a concrete interpretation to these objects.
-From then on, booleans and functions alike can be used as regular Python objects.
+  This example shows how to define custom sorts (i.e. domains) 
+  and symbolic (i.e. uninterpreted) functions. Concretely, we define a 
+  `Boolean` type for which two values exist: `T` and `F`. 
+  Uninterpreted functions `*` (and), `+` (or), and `~` (negation) 
+  mapping booleans to booleans are also defined. A `BooleanAlgebra`
+  then defines axioms over these entities. The `concretize` method is 
+  finally called, which assigns a concrete interpretation to these objects.
+  From then on, booleans and functions alike can be used as regular Python objects.
+
+  **Note**: Custom sorts and uninterpreted functions were found to be potentially very taxing for the constraint solver, depending on the complexity of the axioms. While boolean types are relatively easy to handle, more complex algebras can take forever to solve.
+  
 
 ## TODO
 
 * Write more tests.
-
 * Implement support for constraint solver layers (i.e. `push`, `pop`).
-
 * Implement a wrapper to encapsulate Z3 exceptions in case of unsolvability.
+* Refactor code and make it less of a mess.
 
 ## License
 
 Coopy is released under the terms of the [MIT license](LICENSE).
 
-© Copyright 2020, Adrián Barreal. All rights reserved.
+© Copyright 2020-2021, Adrián Barreal. All rights reserved.
