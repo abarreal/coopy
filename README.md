@@ -189,4 +189,4 @@ their evolution.
 
 Coopy is released under the terms of the [MIT license](LICENSE).
 
-© Copyright 2020-2021, Adrián Barreal. All rights reserved.
+© Copyright since 2020, Adrián Barreal. All rights reserved.
